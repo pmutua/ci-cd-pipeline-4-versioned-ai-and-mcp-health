@@ -1,0 +1,62 @@
+{
+  "g01": {
+    "advice": "Go to the nearest clinic immediately; this needs urgent attention.",
+    "urgency": "high"
+  },
+  "g02": {
+    "advice": "Go to the nearest clinic immediately; this needs urgent attention.",
+    "urgency": "high"
+  },
+  "g03": {
+    "advice": "Go to the nearest clinic immediately; this needs urgent attention.",
+    "urgency": "high"
+  },
+  "g04": {
+    "advice": "Go to the nearest clinic immediately; this needs urgent attention.",
+    "urgency": "high"
+  },
+  "g05": {
+    "advice": "Go to the nearest clinic immediately; this needs urgent attention.",
+    "urgency": "high"
+  },
+  "g06": {
+    "advice": "Go to the nearest clinic immediately; this needs urgent attention.",
+    "urgency": "high"
+  },
+  "g07": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g08": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g09": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g10": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g11": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g12": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g13": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g14": {
+    "advice": "See a clinician within the next day if symptoms persist or worsen.",
+    "urgency": "medium"
+  },
+  "g15": {
+    "advice": "Rest, stay hydrated, and monitor your symptoms over the next day or two.",
+    "urgency": "low"
+  }
+}

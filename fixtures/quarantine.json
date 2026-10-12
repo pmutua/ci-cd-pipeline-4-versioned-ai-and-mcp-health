@@ -1,0 +1,10 @@
+{
+  "_comment": "Deliverable 3: golden-set ids temporarily excluded from the hard regression gate, with a reason and an owner who must resolve the dispute. Quarantined ids are still run and reported every CI pass -- they just don't count against the pass/fail threshold -- so a quarantine can't be used to silently hide a real regression; see runbook.md 'Eval quarantine'.",
+  "quarantined": {
+    "g09": {
+      "reason": "Clinical reviewer disputes whether 'dizzy and nauseous after skipping meals' should default to medium or low without a fever/pain signal -- pending clinician input, tracked outside this capstone.",
+      "owner": "clinical_ops",
+      "added": "2026-10-10"
+    }
+  }
+}
