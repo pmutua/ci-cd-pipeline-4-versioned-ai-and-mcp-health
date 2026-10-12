@@ -3,3 +3,4 @@
 # dev/test only — not installed in the Docker image
 pytest
 httpx
+ruff
