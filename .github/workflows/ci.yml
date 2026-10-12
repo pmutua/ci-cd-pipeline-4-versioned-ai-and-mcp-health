@@ -41,11 +41,11 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - run: pip install -r requirements.txt
       - name: ruff lint
-        run: ruff check .
+        run: python -m ruff check .
       - name: prompt pin check (Deliverable 1 drift guard)
         run: python check_prompt_pin.py
       - name: pytest
-        run: pytest tests/ -q
+        run: python -m pytest tests/ -q
 
   eval:
     name: golden-set eval gate (Deliverable 3)

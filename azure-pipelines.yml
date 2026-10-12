@@ -32,11 +32,11 @@ stages:
               versionSpec: $(pythonVersion)
           - script: pip install -r requirements.txt
             displayName: "install dependencies"
-          - script: ruff check .
+          - script: python -m ruff check .
             displayName: "ruff lint"
           - script: python check_prompt_pin.py
             displayName: "prompt pin check (Deliverable 1 drift guard)"
-          - script: pytest tests/ -q
+          - script: python -m pytest tests/ -q
             displayName: "pytest"
 
   - stage: eval
