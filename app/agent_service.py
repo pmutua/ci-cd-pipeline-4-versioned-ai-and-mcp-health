@@ -27,14 +27,14 @@ from langgraph.prebuilt import create_react_agent
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # The agent must say "I don't know" rather than invent an answer when the
-# tools genuinely cannot help — see evidence/agent_transcript.md's honest
+# tools genuinely cannot help - see evidence/agent_transcript.md's honest
 # failure case (asking for prices, which no tool here provides).
 SYSTEM_CONTEXT = (
     "You are the AfyaPlus logistics assistant. You can check medical stock "
     "levels, plan delivery routes, estimate delivery times, and plan "
     "reorders across partner clinics. If the tools available to you cannot "
-    "answer part or all of a question — for example anything about price "
-    "or cost, which no tool here provides — say so plainly instead of "
+    "answer part or all of a question - for example anything about price "
+    "or cost, which no tool here provides - say so plainly instead of "
     "guessing or inventing data."
 )
 
@@ -61,12 +61,12 @@ async def run_logistics_agent(question: str, trace_id: str | None = None) -> str
     """Ask the logistics agent one question and return its final answer.
 
     trace_id is accepted so app/main.py's /ask-logistics can correlate this
-    call with its own API-level log line — see docs/TRACE_RECONSTRUCTION.md
+    call with its own API-level log line - see docs/TRACE_RECONSTRUCTION.md
     for exactly how a request is followed from there into
     mcp_server/logistics_mcp.py's per-tool log lines by timestamp
     correlation (MCP's tool-call protocol does not carry a caller-supplied
     trace id through to the tool function itself, so exact propagation
-    would need a custom tool interceptor — out of scope for this capstone,
+    would need a custom tool interceptor - out of scope for this capstone,
     and documented as such rather than silently overclaimed).
     """
     agent = await build_agent()

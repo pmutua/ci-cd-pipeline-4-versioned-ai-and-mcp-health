@@ -1,6 +1,6 @@
 # logistics_mcp_versioned.py - the AfyaPlus logistics MCP server
 # (Deliverable 1's "the MCP server... with semver"). Four tools plus one
-# resource, all built on the Python MCP SDK's FastMCP — unchanged in
+# resource, all built on the Python MCP SDK's FastMCP - unchanged in
 # behaviour from the Week 6 original (api/mcp_server/logistics_mcp.py),
 # moved to the repo root and given an explicit SERVER_VERSION so
 # scripts/check_mcp_health.py and GET /health can both report which build
@@ -10,7 +10,7 @@
 #   - input checking: every tool validates its arguments against CLINICS /
 #     VALID_ITEMS before doing anything else
 #   - errors as instructive data: a bad argument returns a JSON object with
-#     an "error" key naming the valid options, never a raised exception —
+#     an "error" key naming the valid options, never a raised exception -
 #     an LLM agent can read a returned string and recover; it cannot read a
 #     stack trace
 #   - one log line per call: every tool logs its name and arguments to
@@ -84,7 +84,7 @@ def distance_km(a: dict, b: dict) -> float:
 def check_stock(item: str) -> str:
     """Check how many units of a medical item each clinic holds.
     Valid items: amoxicillin, ors_sachets, malaria_kits. Stock counts are
-    units on hand, not prices or orders — this tool has no price data and
+    units on hand, not prices or orders - this tool has no price data and
     cannot answer cost questions."""
     log.info("tool=check_stock item=%s", item)
     record_metric("mcp_tool:check_stock")
@@ -136,7 +136,7 @@ def plan_delivery_route(start_clinic_id: str) -> str:
 def get_delivery_eta(from_clinic_id: str, to_clinic_id: str) -> str:
     """Estimate driving distance (km) and time (minutes) between two clinics,
     assuming a 40 km/h average speed on regional roads. This is a planning
-    estimate, not a commitment — actual travel time depends on road
+    estimate, not a commitment - actual travel time depends on road
     conditions and traffic this tool has no data about."""
     log.info("tool=get_delivery_eta from=%s to=%s", from_clinic_id, to_clinic_id)
     record_metric("mcp_tool:get_delivery_eta")
@@ -160,7 +160,7 @@ def get_delivery_eta(from_clinic_id: str, to_clinic_id: str) -> str:
 def request_reorder(clinic_id: str, item: str, units: int) -> str:
     """Plan a reorder of a medical item for one clinic. Validates the clinic
     id, item name, and unit count (1-500) but does not commit or dispatch
-    anything — this tool only returns a planned request for a human to act
+    anything - this tool only returns a planned request for a human to act
     on; it has no order-placement or pricing capability. Valid items:
     amoxicillin, ors_sachets, malaria_kits."""
     log.info("tool=request_reorder clinic=%s item=%s units=%s", clinic_id, item, units)
@@ -180,7 +180,7 @@ def request_reorder(clinic_id: str, item: str, units: int) -> str:
             "clinic_id": clinic_id,
             "item": item,
             "units": units,
-            "note": "Not yet approved or dispatched — a human coordinator must confirm this request.",
+            "note": "Not yet approved or dispatched - a human coordinator must confirm this request.",
         }
     )
 

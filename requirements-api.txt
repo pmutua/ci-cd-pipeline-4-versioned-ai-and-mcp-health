@@ -1,4 +1,4 @@
-# Pinned to exactly what app/ and logistics_mcp_versioned.py import — the
+# Pinned to exactly what app/ and logistics_mcp_versioned.py import - the
 # dependency layer baked into the Docker image (Deliverable 2). Kept
 # separate from the repo-root requirements.txt (which adds pytest/dev
 # tooling) so the image installs only what the running service needs,

@@ -3,7 +3,7 @@
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 Versions tracked here are **prompt releases** (`prompts/triage_system_v*.txt`
 + `config/triage.yaml`'s `prompt_version`/`canary` block), not the service's
-own `SERVICE_VERSION` in `app/main.py` (unchanged at `1.0.0` since Week 6) —
+own `SERVICE_VERSION` in `app/main.py` (unchanged at `1.0.0` since Week 6) -
 see `runbook.md` for why those two version lines are tracked separately.
 
 ## [1.3.0-candidate] - 2026-10-12 (canary: 10% of traffic, see config/triage.yaml)
@@ -15,14 +15,14 @@ see `runbook.md` for why those two version lines are tracked separately.
   a child under 2 with a high fever. Also biases genuinely ambiguous
   messages toward `medium` rather than defaulting to `low`.
 - `evals/golden.jsonl` agreement: `14/14` scored cases (vs `12/14` for
-  `1.2.0`) — see `evidence/eval_run.log`.
+  `1.2.0`) - see `evidence/eval_run.log`.
 
 ### Rollout
 
 - 10% of staging traffic, bucketed deterministically by JWT subject via
   `ab_prompt_flag.py` (same key always lands on the same side for the life
   of this rollout).
-- Rollback: unset the canary or set `PROMPT_VERSION=1.2.0` — see
+- Rollback: unset the canary or set `PROMPT_VERSION=1.2.0` - see
   `clinical_ops_change_brief.md` and `runbook.md`.
 
 ## [1.2.0] - active baseline
@@ -31,13 +31,13 @@ see `runbook.md` for why those two version lines are tracked separately.
   `SYSTEM_PROMPT` constant, now externalised to
   `prompts/triage_system_v1.2.0.txt` and pinned in `prompts/pin.json`.
 - `evals/golden.jsonl` agreement: `12/14` scored cases, above the `0.85`
-  threshold — see `evidence/eval_run.log`.
+  threshold - see `evidence/eval_run.log`.
 
 ## [1.0.0] - service baseline (Week 6/7, unchanged)
 
 - FastAPI + JWT + Docker triage service (`app/`), carried over from
   `afyaplus-service-platform` (Week 6) via `cost-optimized-deployment-and-exec-brief`
-  (Week 7) with no logic changes — see the top-level README's "Weeks 6 and 7
+  (Week 7) with no logic changes - see the top-level README's "Weeks 6 and 7
   reuse" section.
 - LangChain/MCP logistics agent (`app/agent_service.py`) over
   `logistics_mcp_versioned.py`'s four tools (`check_stock`,

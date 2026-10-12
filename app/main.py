@@ -3,7 +3,7 @@
 # FastAPI + Docker + JWT service (api/app/main.py, reused unchanged in
 # structure), extended for Week 8 so GET /health reports the live prompt
 # version + SHA-256, the candidate canary (if any), the MCP server
-# version, and the image tag — the "versions visible at runtime" evidence
+# version, and the image tag - the "versions visible at runtime" evidence
 # Deliverable 1 asks for, read straight from app/prompt_loader.py and
 # config/triage.yaml rather than hardcoded here.
 #
@@ -96,7 +96,7 @@ def triage(request: TriageRequest, user: dict = Depends(require_role("coordinato
         result = triage_model(request.patient_message, user_key=user["sub"])
     except RuntimeError as exc:
         # The caller's request was fine; the model behind us is what
-        # broke (missing key, provider outage, off-schema response) — a
+        # broke (missing key, provider outage, off-schema response) - a
         # 503 the caller can retry, not a raw 500 they can't act on.
         log.info("route=/triage user=%s status=model_unavailable", user["sub"])
         raise HTTPException(status_code=503, detail=f"The AI model is unavailable. Try again shortly. ({exc})")
@@ -129,7 +129,7 @@ async def ask_logistics(body: AskRequest, user: dict = Depends(current_user)) ->
         return AskResponse(question=body.question, answer=answer, trace_id=trace_id, asked_by=user["sub"])
     finally:
         elapsed_ms = int((time.perf_counter() - started) * 1000)
-        # Metadata only, never the question text itself — questions can
+        # Metadata only, never the question text itself - questions can
         # carry sensitive logistics/health context.
         log.info(
             "route=/ask-logistics trace=%s user=%s ms=%s question_chars=%s",

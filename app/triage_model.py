@@ -1,6 +1,6 @@
 # triage_model.py - the actual AI model call behind POST /triage
 # (Deliverable 1's "endpoint wrapping an AI model call"). A single,
-# small, cheap gpt-4o-mini call per request — this is the "triage calls
+# small, cheap gpt-4o-mini call per request - this is the "triage calls
 # and break-tests" line item in the capstone's own cost budget
 # ($0.01-0.05 for 5-15 calls), not the agent's multi-tool loop
 # (app/agent_service.py), which is a separate, larger spend.
@@ -9,13 +9,13 @@
 # (health_tip_api.py): AI_PROVIDER picks OpenAI or OpenRouter so the same
 # code works against either without changes. If no key is configured at
 # all, triage_model() raises RuntimeError, which app/main.py turns into an
-# honest 503 instead of a raw 500 — the caller did nothing wrong; the
+# honest 503 instead of a raw 500 - the caller did nothing wrong; the
 # model behind the API is what's unavailable.
 #
 # Week 8 change: the system prompt is no longer a hardcoded constant. It
 # is resolved per request through app/prompt_loader.py, which picks the
 # active or canary-candidate version (app/prompt_loader.resolve_prompt_version)
-# and reports exactly which version + SHA-256 was used — the versioned-
+# and reports exactly which version + SHA-256 was used - the versioned-
 # prompt evidence Deliverable 1 asks for, wired into the real call path
 # instead of sitting next to it unused.
 
@@ -48,12 +48,12 @@ def triage_model(patient_message: str, user_key: str | None = None) -> dict[str,
     """Classify a patient message's urgency and return brief advice.
 
     user_key (typically the caller's JWT subject) decides canary bucketing
-    via app.prompt_loader.resolve_prompt_version — the same key always
+    via app.prompt_loader.resolve_prompt_version - the same key always
     gets the same prompt version for the life of a rollout.
 
     Returns {"urgency", "advice", "model_used", "prompt_version", "prompt_sha256"}.
     Raises RuntimeError if no API key is configured, or on any provider/
-    parse failure — app/main.py maps this to an honest 503.
+    parse failure - app/main.py maps this to an honest 503.
     """
     if _client is None:
         raise RuntimeError(f"{_key_name} is not configured.")

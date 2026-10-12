@@ -7,7 +7,7 @@
 # JWT_SECRET is read from the environment (.env, loaded via python-dotenv)
 # with a dev-only fallback so the module still imports for a first read
 # without secrets configured. The fallback must never be relied on outside
-# a laptop demo — see Dockerfile / docs/STAKEHOLDER_MEMO.md for how a real
+# a laptop demo - see Dockerfile / docs/STAKEHOLDER_MEMO.md for how a real
 # deployment injects a real secret at runtime instead.
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ TOKEN_LIFETIME_SECONDS = 30 * 60  # 30 minutes
 # Two demo accounts, matching the two roles the API distinguishes between:
 #   - mercy (coordinator): may triage patients and request reorders
 #   - guest (viewer): may authenticate and ask read-only questions, but a
-#     valid guest token still earns a 403 on /triage — see
+#     valid guest token still earns a 403 on /triage - see
 #     evidence/curl_transcript.md for the 401 -> 403 -> 200 ladder.
 # Passwords are hashed at import time; the plaintext is never stored.
 USERS: dict[str, dict[str, object]] = {
@@ -84,7 +84,7 @@ def current_user(credentials: HTTPAuthorizationCredentials = Depends(bearer)) ->
 def require_role(role: str):
     """Dependency factory: current_user() answers WHO is calling; this
     answers what that identity is ALLOWED to do. A valid token for the
-    wrong role earns 403, not 401 — those are different failures with
+    wrong role earns 403, not 401 - those are different failures with
     different fixes."""
 
     def _check(user: dict = Depends(current_user)) -> dict:

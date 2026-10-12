@@ -1,6 +1,6 @@
 -r requirements-api.txt
 
-# dev/test only — not installed in the Docker image
+# dev/test only - not installed in the Docker image
 pytest
 httpx
 ruff
