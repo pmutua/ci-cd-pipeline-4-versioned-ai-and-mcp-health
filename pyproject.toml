@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 120
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+# B008 (Depends(...) in an argument default) is standard FastAPI idiom,
+# not a bug -- every protected route in app/main.py relies on it.
+ignore = []

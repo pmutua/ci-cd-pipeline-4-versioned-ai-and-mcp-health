@@ -1,0 +1,40 @@
+# docker-compose.yml - Deliverable 2's "ends in docker build, tag, and
+# compose up on the runner or laptop" fallback path (no Kubernetes, no
+# cloud deploy target for this capstone). IMAGE_TAG defaults to "dev" but
+# should be set to the git tag being released, e.g.:
+#   IMAGE_TAG=v1.3.0-candidate docker compose up --build
+#
+# Run it:
+#   cp .env.example .env
+#   docker compose up --build
+#   curl http://localhost:8000/health
+
+services:
+  triage-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        IMAGE_TAG: ${IMAGE_TAG:-dev}
+    image: afyaplus-platform:${IMAGE_TAG:-dev}
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      IMAGE_TAG: ${IMAGE_TAG:-dev}
+    # FinOps tags carried over from Week 7's docker-compose.cost.yml, same
+    # vocabulary, so cost allocation reads the same way whether a workload
+    # is costed (Week 7) or shipped through this pipeline (Week 8).
+    labels:
+      finops.cost-center: "afyaplus-clinical-ops"
+      finops.owner: "pmutua@live.com"
+      finops.environment: "capstone-week8"
+      finops.workload: "triage-api"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+    restart: unless-stopped

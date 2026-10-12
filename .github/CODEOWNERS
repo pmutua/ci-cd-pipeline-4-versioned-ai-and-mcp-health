@@ -1,0 +1,19 @@
+# CODEOWNERS - any PR touching a clinical-adjacent path (the prompt text,
+# the serving config, or the MCP server a prompt's "tools" claim can call)
+# requires sign-off here before it can merge. GitHub enforces this only
+# when branch protection on `main` requires a CODEOWNERS review -- see
+# runbook.md "Who reviews clinical-adjacent prompts".
+#
+# This repo has a single maintainer account (@pmutua), so @pmutua stands
+# in for both the clinical_ops and ml-eng reviewer roles the capstone
+# brief names. In a real AfyaPlus org this line would instead name the
+# @afyaplus/clinical-ops and @afyaplus/ml-eng GitHub teams, and a single
+# person could not self-approve a clinical-adjacent change -- see
+# clinical_ops_change_brief.md's "Who approved" line and the governance
+# note in runbook.md for why that separation matters.
+
+/prompts/                    @pmutua
+/config/                     @pmutua
+/logistics_mcp_versioned.py  @pmutua
+/clinics.json                @pmutua
+/evals/                      @pmutua

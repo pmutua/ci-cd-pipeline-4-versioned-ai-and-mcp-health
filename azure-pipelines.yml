@@ -1,0 +1,92 @@
+# azure-pipelines.yml - Deliverable 2's config-as-code twin of
+# .github/workflows/ci.yml, submitted per the capstone's fallback path
+# ("No Azure DevOps: submit azure-pipelines.yml as config-as-code"). Same
+# four stages, same strict ordering (lint_test -> eval -> mcp_health ->
+# build), same scripts -- only the YAML dialect differs. Never run against
+# a live Azure DevOps project for this capstone; see runbook.md and the
+# top-level README's "Fallbacks declared" for the local script output that
+# stands in as evidence (evidence/*.log).
+
+trigger:
+  branches:
+    include: [main]
+
+pr:
+  branches:
+    include: [main]
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  pythonVersion: "3.12"
+
+stages:
+  - stage: lint_test
+    displayName: "lint + unit tests"
+    jobs:
+      - job: lint_test
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: $(pythonVersion)
+          - script: pip install -r requirements.txt
+            displayName: "install dependencies"
+          - script: ruff check .
+            displayName: "ruff lint"
+          - script: python check_prompt_pin.py
+            displayName: "prompt pin check (Deliverable 1 drift guard)"
+          - script: pytest tests/ -q
+            displayName: "pytest"
+
+  - stage: eval
+    displayName: "golden-set eval gate (Deliverable 3)"
+    dependsOn: lint_test
+    jobs:
+      - job: eval
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: $(pythonVersion)
+          - script: pip install -r requirements.txt
+            displayName: "install dependencies"
+          - script: python eval_prompts.py --version 1.2.0
+            displayName: "eval active prompt (1.2.0)"
+          - script: python eval_prompts.py --version 1.3.0-candidate
+            displayName: "eval canary candidate (1.3.0-candidate)"
+
+  - stage: mcp_health
+    displayName: "MCP health probe (Deliverable 4)"
+    dependsOn: eval
+    jobs:
+      - job: mcp_health
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: $(pythonVersion)
+          - script: pip install -r requirements.txt
+            displayName: "install dependencies"
+          - script: python scripts/check_mcp_health.py
+            displayName: "probe the real logistics MCP server"
+
+  - stage: build
+    displayName: "docker build + deploy stub"
+    dependsOn: mcp_health
+    jobs:
+      - job: build
+        steps:
+          - script: |
+              IMAGE_TAG="$(Build.SourceBranchName)"
+              docker build -t afyaplus-platform:"$IMAGE_TAG" --build-arg IMAGE_TAG="$IMAGE_TAG" .
+              echo "##vso[task.setvariable variable=imageTag]$IMAGE_TAG"
+            displayName: "build image tagged with the branch/ref"
+          - script: docker images afyaplus-platform
+            displayName: "record the built image (runbook evidence)"
+          - script: |
+              cp .env.example .env
+              docker run -d --rm --name afyaplus-ci -p 8000:8000 --env-file .env \
+                -e IMAGE_TAG="$(imageTag)" afyaplus-platform:"$(imageTag)"
+              for i in $(seq 1 10); do curl -sf http://localhost:8000/health && break; sleep 2; done
+              curl -sf http://localhost:8000/health
+              docker stop afyaplus-ci
+            displayName: "deploy stub - run container and prove /health responds"

@@ -1,0 +1,114 @@
+# ci.yml - Deliverable 2: the gated pipeline. Four stages in strict order
+# (lint-test -> eval -> mcp_health -> build), each depending on the last
+# via `needs:` so a failure anywhere stops the pipeline before it reaches
+# deploy -- the "fails closed" behaviour Deliverables 3 and 4 are graded
+# on. `retrain-stub` is separate and workflow_dispatch-only: the optional,
+# simulated retrain never runs on a normal PR/push.
+#
+# Triggers: every PR into main, and every push to main (so a merge is
+# re-verified, not just the PR that proposed it).
+#
+# Local-equivalent evidence (for an account without Actions minutes) is
+# captured in evidence/: eval_run.log, eval_fail_demo.log,
+# mcp_health_pass.log, mcp_health_fail.log, docker_build.log,
+# compose_up.log -- see runbook.md "Reproducing this pipeline locally".
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      simulate_retrain:
+        description: "Run the simulated retrain stub (no GPU, no weights trained)"
+        type: boolean
+        default: false
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  lint-test:
+    name: lint + unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - name: ruff lint
+        run: ruff check .
+      - name: prompt pin check (Deliverable 1 drift guard)
+        run: python check_prompt_pin.py
+      - name: pytest
+        run: pytest tests/ -q
+
+  eval:
+    name: golden-set eval gate (Deliverable 3)
+    runs-on: ubuntu-latest
+    needs: lint-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - name: eval active prompt (1.2.0)
+        run: python eval_prompts.py --version 1.2.0
+      - name: eval canary candidate (1.3.0-candidate)
+        run: python eval_prompts.py --version 1.3.0-candidate
+
+  mcp-health:
+    name: MCP health probe (Deliverable 4)
+    runs-on: ubuntu-latest
+    needs: eval
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - name: probe the real logistics MCP server
+        run: python scripts/check_mcp_health.py
+
+  build:
+    name: docker build + deploy stub
+    runs-on: ubuntu-latest
+    needs: mcp-health
+    steps:
+      - uses: actions/checkout@v4
+      - name: build image tagged with the git ref
+        run: |
+          IMAGE_TAG="${GITHUB_REF_NAME//\//-}"
+          docker build -t afyaplus-platform:"$IMAGE_TAG" --build-arg IMAGE_TAG="$IMAGE_TAG" .
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_ENV"
+      - name: record the image digest in the run log (runbook evidence)
+        run: docker inspect --format='{{index .RepoDigests 0}}' afyaplus-platform:"$image_tag" || docker images afyaplus-platform
+      - name: deploy stub - run the container and prove /health responds
+        run: |
+          cp .env.example .env
+          docker run -d --rm --name afyaplus-ci -p 8000:8000 --env-file .env \
+            -e IMAGE_TAG="$image_tag" afyaplus-platform:"$image_tag"
+          for i in $(seq 1 10); do
+            curl -sf http://localhost:8000/health && break
+            sleep 2
+          done
+          curl -sf http://localhost:8000/health
+          docker stop afyaplus-ci
+
+  retrain-stub:
+    name: simulated retrain (optional, manual only)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && inputs.simulate_retrain == true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install -r requirements.txt
+      - name: bump model_version, no weights trained
+        run: python scripts/retrain_stub.py --note "Triggered manually via workflow_dispatch."
