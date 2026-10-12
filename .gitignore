@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.env
+# Runtime app/mcp logs are gitignored; evidence/*.log (captured pipeline
+# run output) is deliberately NOT ignored -- it's Deliverable 2/3/4 proof.
+logs/
+.vscode/

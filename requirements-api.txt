@@ -1,0 +1,16 @@
+# Pinned to exactly what app/ and mcp_server/ import — the dependency
+# layer baked into the Docker image (Deliverable 2). Kept separate from
+# the repo-root requirements.txt (which adds pytest/dev tooling) so the
+# image installs only what the running service needs, and this list stays
+# short enough to actually audit.
+fastapi
+uvicorn[standard]
+pydantic
+python-dotenv
+PyJWT
+bcrypt
+openai
+mcp
+langchain-mcp-adapters
+langchain-openai
+langgraph
