@@ -11,6 +11,13 @@
 # all, triage_model() raises RuntimeError, which app/main.py turns into an
 # honest 503 instead of a raw 500 — the caller did nothing wrong; the
 # model behind the API is what's unavailable.
+#
+# Week 8 change: the system prompt is no longer a hardcoded constant. It
+# is resolved per request through app/prompt_loader.py, which picks the
+# active or canary-candidate version (app/prompt_loader.resolve_prompt_version)
+# and reports exactly which version + SHA-256 was used — the versioned-
+# prompt evidence Deliverable 1 asks for, wired into the real call path
+# instead of sitting next to it unused.
 
 from __future__ import annotations
 
@@ -19,6 +26,9 @@ import os
 
 from dotenv import load_dotenv
 from openai import OpenAI, OpenAIError
+
+from app.prompt_loader import get_prompt, resolve_prompt_version
+from tool_metrics import increment as record_metric
 
 load_dotenv()
 
@@ -33,32 +43,30 @@ _model_name = os.getenv("MODEL_NAME", "gpt-4o-mini")
 
 _client = OpenAI(base_url=_base_url, api_key=_api_key) if _api_key else None
 
-SYSTEM_PROMPT = (
-    "You are a non-diagnostic community health triage assistant for AfyaPlus "
-    "clinics in Kenya. Given a patient's plain-language message, classify "
-    "urgency and give brief, safe, non-diagnostic advice. Never diagnose a "
-    "condition or name a specific drug or dose. If the message describes an "
-    "emergency (e.g. chest pain, severe bleeding, unconsciousness, "
-    "difficulty breathing), urgency must be 'high' and advice must tell the "
-    "patient to go to the nearest clinic immediately. "
-    'Respond with ONLY a JSON object: {"urgency": "low"|"medium"|"high", "advice": "<one or two short sentences>"}.'
-)
 
-
-def triage_model(patient_message: str) -> dict[str, str]:
+def triage_model(patient_message: str, user_key: str | None = None) -> dict[str, str]:
     """Classify a patient message's urgency and return brief advice.
 
-    Returns {"urgency": ..., "advice": ..., "model_used": ...}.
+    user_key (typically the caller's JWT subject) decides canary bucketing
+    via app.prompt_loader.resolve_prompt_version — the same key always
+    gets the same prompt version for the life of a rollout.
+
+    Returns {"urgency", "advice", "model_used", "prompt_version", "prompt_sha256"}.
     Raises RuntimeError if no API key is configured, or on any provider/
     parse failure — app/main.py maps this to an honest 503.
     """
     if _client is None:
         raise RuntimeError(f"{_key_name} is not configured.")
+
+    version = resolve_prompt_version(user_key)
+    prompt = get_prompt(version)
+    record_metric(f"prompt_version:{version}")
+
     try:
         response = _client.chat.completions.create(
             model=_model_name,
             messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": prompt["text"]},
                 {"role": "user", "content": patient_message},
             ],
             max_tokens=120,
@@ -73,4 +81,10 @@ def triage_model(patient_message: str) -> dict[str, str]:
         raise RuntimeError(f"Triage model call failed: {exc}") from exc
     if urgency not in {"low", "medium", "high"}:
         urgency = "medium"  # model returned something off-schema; fail toward caution, not toward silence
-    return {"urgency": urgency, "advice": advice, "model_used": _model_name}
+    return {
+        "urgency": urgency,
+        "advice": advice,
+        "model_used": _model_name,
+        "prompt_version": prompt["version"],
+        "prompt_sha256": prompt["sha256"],
+    }

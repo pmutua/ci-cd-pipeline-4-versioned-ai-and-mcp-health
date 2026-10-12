@@ -7,8 +7,9 @@
 
 from __future__ import annotations
 
-import app.main as main_module
 from fastapi.testclient import TestClient
+
+import app.main as main_module
 
 client = TestClient(main_module.app)
 
@@ -25,6 +26,13 @@ def test_health_is_unprotected() -> None:
     body = resp.json()
     assert body["service"] == "afyaplus-service-platform"
     assert body["status"] == "ok"
+    # Week 8: /health must report the versions a marker needs to see at
+    # runtime without reading any source file.
+    assert body["prompt_version"] == "1.2.0"
+    assert len(body["prompt_sha256"]) == 64
+    assert body["candidate_prompt_version"] == "1.3.0-candidate"
+    assert body["mcp_server_version"]
+    assert body["model_version"]
 
 
 def test_triage_without_token_is_401() -> None:
@@ -57,7 +65,13 @@ def test_triage_with_coordinator_token_is_200(monkeypatch) -> None:
     monkeypatch.setattr(
         main_module,
         "triage_model",
-        lambda message: {"urgency": "low", "advice": "Rest and drink fluids.", "model_used": "stub-for-test"},
+        lambda message, user_key=None: {
+            "urgency": "low",
+            "advice": "Rest and drink fluids.",
+            "model_used": "stub-for-test",
+            "prompt_version": "1.2.0",
+            "prompt_sha256": "0" * 64,
+        },
     )
     token = _login("mercy", "logistics2026")
     resp = client.post(
@@ -82,7 +96,7 @@ def test_triage_request_too_short_is_422() -> None:
 
 
 def test_triage_model_unavailable_is_503(monkeypatch) -> None:
-    def _boom(message: str) -> dict[str, str]:
+    def _boom(message: str, user_key: str | None = None) -> dict[str, str]:
         raise RuntimeError("OPENAI_API_KEY is not configured.")
 
     monkeypatch.setattr(main_module, "triage_model", _boom)

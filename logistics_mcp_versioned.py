@@ -1,5 +1,10 @@
-# logistics_mcp.py - the AfyaPlus logistics MCP server (Deliverable 3).
-# Four tools plus one resource, all built on the Python MCP SDK's FastMCP.
+# logistics_mcp_versioned.py - the AfyaPlus logistics MCP server
+# (Deliverable 1's "the MCP server... with semver"). Four tools plus one
+# resource, all built on the Python MCP SDK's FastMCP — unchanged in
+# behaviour from the Week 6 original (api/mcp_server/logistics_mcp.py),
+# moved to the repo root and given an explicit SERVER_VERSION so
+# scripts/check_mcp_health.py and GET /health can both report which build
+# of this server they're talking to.
 #
 # Production standards applied throughout, per the capstone rubric:
 #   - input checking: every tool validates its arguments against CLINICS /
@@ -9,35 +14,41 @@
 #     an LLM agent can read a returned string and recover; it cannot read a
 #     stack trace
 #   - one log line per call: every tool logs its name and arguments to
-#     logs/mcp.log (see LOG_PATH below) before doing any work, so a
-#     request's tool activity can be reconstructed after the fact — see
-#     docs/TRACE_RECONSTRUCTION.md
+#     logs/mcp.log before doing any work, so a request's tool activity can
+#     be reconstructed after the fact
 #
 # Run it standalone:
-#   python mcp_server/logistics_mcp.py
+#   python logistics_mcp_versioned.py
 # Fastest first test (no agent, no protocol):
 #   python -c "
-#   import mcp_server.logistics_mcp as m
+#   import logistics_mcp_versioned as m
 #   print(m.check_stock('amoxicillin'))
 #   print(m.check_stock('bandages'))
 #   "
 # Interactive testing with the official developer tool:
-#   npx @modelcontextprotocol/inspector python mcp_server/logistics_mcp.py
+#   npx @modelcontextprotocol/inspector python logistics_mcp_versioned.py
 # Or the offline-friendly equivalent used for this capstone's own evidence:
 #   pytest tests/test_mcp_tools.py -v
+# Automated health probe wired into the pipeline (Deliverable 4):
+#   python scripts/check_mcp_health.py
 
 from __future__ import annotations
 
 import json
 import logging
 import math
+import sys
 from pathlib import Path
 
 from mcp.server.fastmcp import FastMCP
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = Path(__file__).resolve().parent
 LOG_PATH = REPO_ROOT / "logs" / "mcp.log"
 LOG_PATH.parent.mkdir(exist_ok=True)
+
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+from tool_metrics import increment as record_metric  # noqa: E402
 
 logging.basicConfig(
     level=logging.INFO,
@@ -46,9 +57,11 @@ logging.basicConfig(
 )
 log = logging.getLogger("logistics_mcp")
 
+SERVER_VERSION = "1.0.0"
+
 server = FastMCP("afyaplus-logistics")
 
-CLINICS_PATH = Path(__file__).resolve().parent / "clinics.json"
+CLINICS_PATH = REPO_ROOT / "clinics.json"
 with open(CLINICS_PATH) as f:
     CLINICS = json.load(f)["clinics"]
 
@@ -74,6 +87,7 @@ def check_stock(item: str) -> str:
     units on hand, not prices or orders — this tool has no price data and
     cannot answer cost questions."""
     log.info("tool=check_stock item=%s", item)
+    record_metric("mcp_tool:check_stock")
     if item not in VALID_ITEMS:
         return json.dumps({"error": f"Unknown item '{item}'. Valid items: {VALID_ITEMS}"})
     rows = [
@@ -97,6 +111,7 @@ def plan_delivery_route(start_clinic_id: str) -> str:
     route. Valid clinic ids: C01-C05 (see the clinics://directory resource
     for the full list with names)."""
     log.info("tool=plan_delivery_route start=%s", start_clinic_id)
+    record_metric("mcp_tool:plan_delivery_route")
     start = _clinic(start_clinic_id)
     if start is None:
         ids = [c["id"] for c in CLINICS]
@@ -124,6 +139,7 @@ def get_delivery_eta(from_clinic_id: str, to_clinic_id: str) -> str:
     estimate, not a commitment — actual travel time depends on road
     conditions and traffic this tool has no data about."""
     log.info("tool=get_delivery_eta from=%s to=%s", from_clinic_id, to_clinic_id)
+    record_metric("mcp_tool:get_delivery_eta")
     a, b = _clinic(from_clinic_id), _clinic(to_clinic_id)
     if a is None or b is None:
         ids = [c["id"] for c in CLINICS]
@@ -148,6 +164,7 @@ def request_reorder(clinic_id: str, item: str, units: int) -> str:
     on; it has no order-placement or pricing capability. Valid items:
     amoxicillin, ors_sachets, malaria_kits."""
     log.info("tool=request_reorder clinic=%s item=%s units=%s", clinic_id, item, units)
+    record_metric("mcp_tool:request_reorder")
     clinic = _clinic(clinic_id)
     if clinic is None:
         ids = [c["id"] for c in CLINICS]
@@ -172,6 +189,7 @@ def request_reorder(clinic_id: str, item: str, units: int) -> str:
 def clinic_directory() -> str:
     """Read-only directory of all AfyaPlus partner clinics: id, name, county."""
     log.info("resource=clinics://directory")
+    record_metric("mcp_resource:clinics_directory")
     return json.dumps([{"id": c["id"], "name": c["name"], "county": c["county"]} for c in CLINICS])
 
 

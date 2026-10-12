@@ -1,0 +1,30 @@
+# config/triage.yaml - Deliverable 1: model, limits, and the currently
+# pinned prompt_version in one file a reviewer can read without opening
+# any Python. app/prompt_loader.py reads this at runtime; check_prompt_pin.py
+# and eval_prompts.py both validate against it in CI before anything ships.
+#
+# Changing prompt_version or the canary block here is a clinical-adjacent
+# change: it needs CODEOWNERS sign-off from clinical_ops and ml-eng (see
+# .github/CODEOWNERS) and must clear evals/golden.jsonl's regression gate.
+
+model: gpt-4o-mini
+# model_version is a label, not an API model name -- it exists so
+# scripts/retrain_stub.py has something to bump when "retraining" is
+# simulated (see CHANGELOG.md "no weights were trained" entries), and so
+# /health can report which simulated model generation is live.
+model_version: sim-2026.10.1
+temperature: 0
+max_tokens: 120
+
+# The version served to every caller by default.
+prompt_version: "1.2.0"
+
+# Canary: a candidate prompt tested on a slice of traffic before it
+# becomes the default. candidate_traffic_percent: 0 means no canary is
+# running -- ab_prompt_flag.py is never consulted and every caller gets
+# prompt_version above.
+canary:
+  candidate_prompt_version: "1.3.0-candidate"
+  candidate_traffic_percent: 10
+
+mcp_server_version: "1.0.0"

@@ -1,16 +1,21 @@
-# test_mcp_tools.py - Deliverable 3 evidence: unit tests against the MCP
+# test_mcp_tools.py - Deliverable 3/4 evidence: unit tests against the MCP
 # tool functions directly (no protocol, no subprocess), per the capstone's
 # own fallback path ("No MCP Inspector: unit-test the tool functions with
 # pytest"). Each tool is exercised once with valid input and at least once
 # with a deliberately invalid call, proving errors come back as instructive
 # JSON data (an "error" key naming the valid options) rather than a raised
-# exception the caller can't recover from.
+# exception the caller can't recover from. The protocol-level handshake
+# probe lives in scripts/check_mcp_health.py.
 
 from __future__ import annotations
 
 import json
 
-from mcp_server import logistics_mcp as mcp
+import logistics_mcp_versioned as mcp
+
+
+def test_server_version_is_set() -> None:
+    assert mcp.SERVER_VERSION == "1.0.0"
 
 
 def test_check_stock_valid_item() -> None:

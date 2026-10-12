@@ -12,6 +12,13 @@ class HealthResponse(BaseModel):
     service: str
     version: str
     status: str
+    image_tag: str
+    prompt_version: str
+    prompt_sha256: str
+    candidate_prompt_version: str | None = None
+    candidate_traffic_percent: int | None = None
+    model_version: str
+    mcp_server_version: str
 
 
 class LoginRequest(BaseModel):
@@ -34,6 +41,8 @@ class TriageResponse(BaseModel):
     advice: str
     handled_for: str
     model_used: str
+    prompt_version: str
+    prompt_sha256: str
 
 
 class AskRequest(BaseModel):

@@ -1,5 +1,5 @@
 # agent_service.py - Deliverable 4: a LangChain agent that consumes the
-# MCP server's tools (mcp_server/logistics_mcp.py) through the official
+# MCP server's tools (logistics_mcp_versioned.py) through the official
 # langchain-mcp-adapters bridge, run in a think/act/observe loop by
 # LangGraph's prebuilt ReAct agent. app/main.py's POST /ask-logistics wraps
 # run_logistics_agent() behind app.auth.current_user, so the agent shares
@@ -41,7 +41,7 @@ SYSTEM_CONTEXT = (
 SERVERS = {
     "logistics": {
         "command": "python",
-        "args": ["mcp_server/logistics_mcp.py"],
+        "args": ["logistics_mcp_versioned.py"],
         "transport": "stdio",
         "cwd": str(REPO_ROOT),
     }
