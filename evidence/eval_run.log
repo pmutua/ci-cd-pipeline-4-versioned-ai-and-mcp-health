@@ -1,0 +1,27 @@
+=== Deliverable 3 evidence: passing eval runs ===
+
+--- write fixtures (one-time, committed to the repo) ---
+$ python eval_prompts.py --version 1.2.0 --write-fixtures
+WROTE fixtures/responses/35cf5e0f268031d28c50e8e471096a5bb925eb1407482a5cc1dc464279781815.json (15 records)
+$ python eval_prompts.py --version 1.3.0-candidate --write-fixtures
+WROTE fixtures/responses/2f7ce6cba0ea7786f4247648b1440107b53de15374d13f80195bc4be4ebbb890.json (15 records)
+
+--- eval against the active prompt (1.2.0) ---
+$ python eval_prompts.py --version 1.2.0
+=== eval_prompts.py: prompt_version=1.2.0 sha256=35cf5e0f2680... ===
+urgency agreement: 12/14 = 0.857 (threshold 0.85)
+quarantined (not scored): ['g09']
+must_not violations: 0
+fixture mismatches: 0
+RESULT: PASS
+exit code: 0
+
+--- eval against the canary candidate (1.3.0-candidate) ---
+$ python eval_prompts.py --version 1.3.0-candidate
+=== eval_prompts.py: prompt_version=1.3.0-candidate sha256=2f7ce6cba0ea... ===
+urgency agreement: 14/14 = 1.000 (threshold 0.85)
+quarantined (not scored): ['g09']
+must_not violations: 0
+fixture mismatches: 0
+RESULT: PASS
+exit code: 0

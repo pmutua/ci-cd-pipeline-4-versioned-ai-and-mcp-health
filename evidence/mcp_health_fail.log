@@ -1,0 +1,9 @@
+=== FAIL case: deliberately broken stub (missing request_reorder, check_stock always errors) ===
+Command: python scripts/check_mcp_health.py --server scripts/broken_mcp_stub.py
+
+[10/12/26 12:38:45] INFO     Processing request of type           server.py:727
+                             ListToolsRequest                                  
+FAIL: server=scripts/broken_mcp_stub.py missing required tool(s): ['get_delivery_eta', 'request_reorder']
+      tools present: ['check_stock', 'plan_delivery_route']
+
+exit code: 1 (non-zero => CI mcp_health job fails => deploy does not proceed)

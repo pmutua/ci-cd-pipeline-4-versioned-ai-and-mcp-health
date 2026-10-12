@@ -1,0 +1,7 @@
+=== PASS case: real logistics_mcp_versioned.py ===
+2026-10-12 12:38:35,992 Processing request of type ListToolsRequest
+2026-10-12 12:38:35,994 Processing request of type CallToolRequest
+2026-10-12 12:38:35,994 tool=check_stock item=amoxicillin
+PASS: server=logistics_mcp_versioned.py handshake ok, tools=['check_stock', 'get_delivery_eta', 'plan_delivery_route', 'request_reorder'], check_stock round-trip ok
+
+exit code: 0

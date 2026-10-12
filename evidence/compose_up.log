@@ -1,0 +1,89 @@
+=== docker compose up --build (Deliverable 2: compose deploy stub) ===
+Command: IMAGE_TAG=v1.3.0-candidate docker compose up --build -d
+ Image afyaplus-platform:v1.3.0-candidate Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 757B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 2.53kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 1.3s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 179B done
+#4 DONE 0.0s
+
+#5 [1/9] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#5 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 778B done
+#6 DONE 0.0s
+
+#7 [7/9] COPY config/ ./config/
+#7 CACHED
+
+#8 [3/9] COPY requirements-api.txt .
+#8 CACHED
+
+#9 [5/9] COPY app/ ./app/
+#9 CACHED
+
+#10 [8/9] COPY logistics_mcp_versioned.py ab_prompt_flag.py tool_metrics.py clinics.json check_prompt_pin.py ./
+#10 CACHED
+
+#11 [6/9] COPY prompts/ ./prompts/
+#11 CACHED
+
+#12 [2/9] WORKDIR /app
+#12 CACHED
+
+#13 [4/9] RUN pip install --no-cache-dir -r requirements-api.txt
+#13 CACHED
+
+#14 [9/9] RUN groupadd --gid 10001 afyaplus     && useradd --uid 10001 --gid afyaplus --no-create-home --shell /usr/sbin/nologin afyaplus     && mkdir -p /app/logs     && chown -R afyaplus:afyaplus /app
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:b4d73bb69ebbf47c056f04deaf9d1883cfaa8cdf16809f2fa56ccd3bc1171272 done
+#15 exporting config sha256:afd663b10290992674693f7a037947b293307e42c29778027f9cc5baa8309480 done
+#15 exporting attestation manifest sha256:7833c6dca111674619976c5511065d4d60293c56c9a4398cefc3f6a945c989a1 0.0s done
+#15 exporting manifest list sha256:79e4e04eb07338712cc492ad901d178498ee876de800bc47b48d63912c4eab39 0.0s done
+#15 naming to docker.io/library/afyaplus-platform:v1.3.0-candidate
+#15 naming to docker.io/library/afyaplus-platform:v1.3.0-candidate done
+#15 unpacking to docker.io/library/afyaplus-platform:v1.3.0-candidate 0.0s done
+#15 DONE 0.2s
+
+#16 resolving provenance for metadata file
+#16 DONE 0.0s
+ Image afyaplus-platform:v1.3.0-candidate Built 
+ Network ci-cd-pipeline-4-versioned-ai-and-mcp-health_default Creating 
+ Network ci-cd-pipeline-4-versioned-ai-and-mcp-health_default Created 
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Creating 
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Created 
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Starting 
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Started 
+
+--- waiting for /health ---
+{"service":"afyaplus-service-platform","version":"1.0.0","status":"ok","image_tag":"v1.3.0-candidate","prompt_version":"1.2.0","prompt_sha256":"35cf5e0f268031d28c50e8e471096a5bb925eb1407482a5cc1dc464279781815","candidate_prompt_version":"1.3.0-candidate","candidate_traffic_percent":10,"model_version":"sim-2026.10.1","mcp_server_version":"1.0.0"}
+
+--- docker compose ps ---
+NAME                                                        IMAGE                                COMMAND                  SERVICE      CREATED         STATUS                            PORTS
+ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1   afyaplus-platform:v1.3.0-candidate   "uvicorn app.main:ap…"   triage-api   6 seconds ago   Up 5 seconds (health: starting)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+
+--- image digest (runbook tag-alignment evidence) ---
+REPOSITORY          TAG                DIGEST                                                                    IMAGE ID       CREATED          SIZE
+afyaplus-platform   v1.3.0-candidate   sha256:79e4e04eb07338712cc492ad901d178498ee876de800bc47b48d63912c4eab39   79e4e04eb073   28 seconds ago   395MB
+
+--- docker compose down ---
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Stopping 
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Stopped 
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Removing 
+ Container ci-cd-pipeline-4-versioned-ai-and-mcp-health-triage-api-1 Removed 
+ Network ci-cd-pipeline-4-versioned-ai-and-mcp-health_default Removing 
+ Network ci-cd-pipeline-4-versioned-ai-and-mcp-health_default Removed 

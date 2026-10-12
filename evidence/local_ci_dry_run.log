@@ -1,0 +1,325 @@
+=== stage: lint_test ===
+All checks passed!
+PASS: all 2 pinned prompt(s) match prompts/pin.json
+...............................                                          [100%]
+31 passed in 5.02s
+
+=== stage: eval ===
+=== eval_prompts.py: prompt_version=1.2.0 sha256=35cf5e0f2680... ===
+urgency agreement: 12/14 = 0.857 (threshold 0.85)
+quarantined (not scored): ['g09']
+must_not violations: 0
+fixture mismatches: 0
+RESULT: PASS
+=== eval_prompts.py: prompt_version=1.3.0-candidate sha256=2f7ce6cba0ea... ===
+urgency agreement: 14/14 = 1.000 (threshold 0.85)
+quarantined (not scored): ['g09']
+must_not violations: 0
+fixture mismatches: 0
+RESULT: PASS
+
+=== stage: mcp_health ===
+2026-10-12 12:57:17,342 Processing request of type ListToolsRequest
+2026-10-12 12:57:17,344 Processing request of type CallToolRequest
+2026-10-12 12:57:17,345 tool=check_stock item=amoxicillin
+PASS: server=logistics_mcp_versioned.py handshake ok, tools=['check_stock', 'get_delivery_eta', 'plan_delivery_route', 'request_reorder'], check_stock ok
+
+=== stage: build ===
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.53kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-slim
+#2 DONE 6.5s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 179B done
+#3 DONE 0.1s
+
+#4 [1/9] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#4 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.1s done
+#4 CACHED
+
+#5 [internal] load build context
+#5 transferring context: 42.28kB 0.0s done
+#5 DONE 0.1s
+
+#6 [2/9] WORKDIR /app
+#6 DONE 0.1s
+
+#7 [3/9] COPY requirements-api.txt .
+#7 DONE 0.1s
+
+#8 [4/9] RUN pip install --no-cache-dir -r requirements-api.txt
+#8 4.210 Collecting fastapi (from -r requirements-api.txt (line 6))
+#8 4.801   Downloading fastapi-0.143.0-py3-none-any.whl.metadata (26 kB)
+#8 5.544 Collecting pydantic (from -r requirements-api.txt (line 8))
+#8 5.739   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+#8 6.285 Collecting python-dotenv (from -r requirements-api.txt (line 9))
+#8 6.469   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+#8 6.678 Collecting PyJWT (from -r requirements-api.txt (line 10))
+#8 6.851   Downloading pyjwt-2.15.1-py3-none-any.whl.metadata (3.5 kB)
+#8 7.062 Collecting bcrypt (from -r requirements-api.txt (line 11))
+#8 7.234   Downloading bcrypt-5.0.0-cp39-abi3-manylinux_2_34_x86_64.whl.metadata (10 kB)
+#8 7.586 Collecting openai (from -r requirements-api.txt (line 12))
+#8 7.773   Downloading openai-3.29.0-py3-none-any.whl.metadata (44 kB)
+#8 7.986 Collecting mcp (from -r requirements-api.txt (line 13))
+#8 8.156   Downloading mcp-2.3.0-py3-none-any.whl.metadata (6.6 kB)
+#8 8.334 Collecting langchain-mcp-adapters (from -r requirements-api.txt (line 14))
+#8 8.509   Downloading langchain_mcp_adapters-0.3.2-py3-none-any.whl.metadata (11 kB)
+#8 8.740 Collecting langchain-openai (from -r requirements-api.txt (line 15))
+#8 8.909   Downloading langchain_openai-1.7.0-py3-none-any.whl.metadata (3.6 kB)
+#8 9.143 Collecting langgraph (from -r requirements-api.txt (line 16))
+#8 9.318   Downloading langgraph-1.2.14-py3-none-any.whl.metadata (4.9 kB)
+#8 9.543 Collecting PyYAML (from -r requirements-api.txt (line 17))
+#8 9.715   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#8 9.921 Collecting uvicorn[standard] (from -r requirements-api.txt (line 7))
+#8 10.09   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#8 10.30 Collecting starlette>=0.46.0 (from fastapi->-r requirements-api.txt (line 6))
+#8 10.47   Downloading starlette-1.7.0-py3-none-any.whl.metadata (6.6 kB)
+#8 10.67 Collecting typing-extensions>=4.8.0 (from fastapi->-r requirements-api.txt (line 6))
+#8 10.84   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#8 11.02 Collecting typing-inspection>=0.4.2 (from fastapi->-r requirements-api.txt (line 6))
+#8 11.19   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#8 11.35 Collecting annotated-doc>=0.0.2 (from fastapi->-r requirements-api.txt (line 6))
+#8 11.52   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#8 11.72 Collecting opentelemetry-api>=1.44.0 (from fastapi->-r requirements-api.txt (line 6))
+#8 11.90   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+#8 12.09 Collecting click>=7.0 (from uvicorn[standard]->-r requirements-api.txt (line 7))
+#8 12.28   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#8 12.46 Collecting h11>=0.8 (from uvicorn[standard]->-r requirements-api.txt (line 7))
+#8 12.63   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#8 12.86 Collecting httptools>=0.8.0 (from uvicorn[standard]->-r requirements-api.txt (line 7))
+#8 13.03   Downloading httptools-0.9.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+#8 13.26 Collecting uvloop>=0.15.1 (from uvicorn[standard]->-r requirements-api.txt (line 7))
+#8 13.43   Downloading uvloop-0.23.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.1 kB)
+#8 13.73 Collecting watchfiles>=0.20 (from uvicorn[standard]->-r requirements-api.txt (line 7))
+#8 13.91   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#8 14.30 Collecting websockets>=13.0 (from uvicorn[standard]->-r requirements-api.txt (line 7))
+#8 14.47   Downloading websockets-17.2-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)
+#8 14.64 Collecting annotated-types>=0.6.0 (from pydantic->-r requirements-api.txt (line 8))
+#8 14.81   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#8 16.57 Collecting pydantic-core==2.50.1 (from pydantic->-r requirements-api.txt (line 8))
+#8 16.75   Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+#8 16.94 Collecting anyio<5,>=4.10.0 (from openai->-r requirements-api.txt (line 12))
+#8 17.11   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#8 17.29 Collecting httpx2<3,>=2.12.0 (from openai->-r requirements-api.txt (line 12))
+#8 17.46   Downloading httpx2-2.13.1-py3-none-any.whl.metadata (9.8 kB)
+#8 17.80 Collecting jiter<1,>=0.16.0 (from openai->-r requirements-api.txt (line 12))
+#8 17.97   Downloading jiter-0.17.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+#8 18.19 Collecting sniffio (from openai->-r requirements-api.txt (line 12))
+#8 18.36   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+#8 18.57 Collecting jsonschema>=4.20.0 (from mcp->-r requirements-api.txt (line 13))
+#8 18.75   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#8 18.92 Collecting mcp-types==2.3.0 (from mcp->-r requirements-api.txt (line 13))
+#8 19.09   Downloading mcp_types-2.3.0-py3-none-any.whl.metadata (1.9 kB)
+#8 19.29 Collecting python-multipart>=0.0.9 (from mcp->-r requirements-api.txt (line 13))
+#8 19.46   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+#8 19.68 Collecting sse-starlette>=3.0.0 (from mcp->-r requirements-api.txt (line 13))
+#8 19.85   Downloading sse_starlette-3.5.0-py3-none-any.whl.metadata (15 kB)
+#8 20.13 Collecting langchain-core<2.0.0,>=1.3.3 (from langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 20.30   Downloading langchain_core-1.6.9-py3-none-any.whl.metadata (4.8 kB)
+#8 20.31 Collecting mcp (from -r requirements-api.txt (line 13))
+#8 20.48   Downloading mcp-1.30.0-py3-none-any.whl.metadata (9.3 kB)
+#8 20.68 Collecting httpx-sse>=0.4 (from mcp->-r requirements-api.txt (line 13))
+#8 20.85   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#8 21.04 Collecting httpx<1.0.0,>=0.27.1 (from mcp->-r requirements-api.txt (line 13))
+#8 21.51   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#8 21.70 Collecting pydantic-settings>=2.5.2 (from mcp->-r requirements-api.txt (line 13))
+#8 21.87   Downloading pydantic_settings-2.15.0-py3-none-any.whl.metadata (3.9 kB)
+#8 22.08 Collecting certifi>=2024.6.2 (from langchain-openai->-r requirements-api.txt (line 15))
+#8 22.25   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+#8 22.52 Collecting tiktoken<1.0.0,>=0.7.0 (from langchain-openai->-r requirements-api.txt (line 15))
+#8 22.69   Downloading tiktoken-0.14.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (6.7 kB)
+#8 22.91 Collecting langgraph-checkpoint<5.0.0,>=4.1.0 (from langgraph->-r requirements-api.txt (line 16))
+#8 23.40   Downloading langgraph_checkpoint-4.2.0-py3-none-any.whl.metadata (6.7 kB)
+#8 23.67 Collecting langgraph-prebuilt<1.2.0,>=1.1.0 (from langgraph->-r requirements-api.txt (line 16))
+#8 23.85   Downloading langgraph_prebuilt-1.1.0-py3-none-any.whl.metadata (5.2 kB)
+#8 24.09 Collecting langgraph-sdk<0.5.0,>=0.4.6 (from langgraph->-r requirements-api.txt (line 16))
+#8 24.26   Downloading langgraph_sdk-0.4.6-py3-none-any.whl.metadata (5.1 kB)
+#8 24.67 Collecting xxhash>=3.5.0 (from langgraph->-r requirements-api.txt (line 16))
+#8 24.84   Downloading xxhash-4.0.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (17 kB)
+#8 25.03 Collecting idna>=2.8 (from anyio<5,>=4.10.0->openai->-r requirements-api.txt (line 12))
+#8 25.23   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#8 25.43 Collecting httpcore==1.* (from httpx<1.0.0,>=0.27.1->mcp->-r requirements-api.txt (line 13))
+#8 25.60   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#8 25.78 Collecting httpcore2==2.13.1 (from httpx2<3,>=2.12.0->openai->-r requirements-api.txt (line 12))
+#8 25.95   Downloading httpcore2-2.13.1-py3-none-any.whl.metadata (26 kB)
+#8 26.13 Collecting truststore>=0.10 (from httpx2<3,>=2.12.0->openai->-r requirements-api.txt (line 12))
+#8 26.30   Downloading truststore-0.10.4-py3-none-any.whl.metadata (4.4 kB)
+#8 26.49 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp->-r requirements-api.txt (line 13))
+#8 26.67   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#8 26.85 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp->-r requirements-api.txt (line 13))
+#8 27.02   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#8 27.22 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp->-r requirements-api.txt (line 13))
+#8 27.41   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#8 28.53 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp->-r requirements-api.txt (line 13))
+#8 28.72   Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#8 28.93 Collecting jsonpatch<2.0.0,>=1.33.0 (from langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 29.11   Downloading jsonpatch-1.35-py3-none-any.whl.metadata (3.7 kB)
+#8 29.29 Collecting langchain-protocol>=0.0.17 (from langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 29.46   Downloading langchain_protocol-0.0.19-py3-none-any.whl.metadata (2.4 kB)
+#8 29.96 Collecting langsmith<1.0.0,>=0.3.45 (from langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 30.13   Downloading langsmith-0.14.7-py3-none-any.whl.metadata (22 kB)
+#8 30.36 Collecting packaging>=23.2.0 (from langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 30.55   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#8 30.77 Collecting tenacity!=8.4.0,<10.0.0,>=8.1.0 (from langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 30.95   Downloading tenacity-9.2.1-py3-none-any.whl.metadata (1.4 kB)
+#8 31.47 Collecting uuid-utils<1.0,>=0.12.0 (from langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 31.65   Downloading uuid_utils-0.17.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.4 kB)
+#8 31.99 Collecting ormsgpack>=1.12.0 (from langgraph-checkpoint<5.0.0,>=4.1.0->langgraph->-r requirements-api.txt (line 16))
+#8 32.18   Downloading ormsgpack-1.12.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (3.2 kB)
+#8 33.36 Collecting orjson>=3.11.5 (from langgraph-sdk<0.5.0,>=0.4.6->langgraph->-r requirements-api.txt (line 16))
+#8 33.54   Downloading orjson-3.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (42 kB)
+#8 33.57 Collecting websockets>=13.0 (from uvicorn[standard]->-r requirements-api.txt (line 7))
+#8 33.75   Downloading websockets-16.1.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#8 34.77 Collecting cryptography>=3.4.0 (from pyjwt[crypto]>=2.10.1->mcp->-r requirements-api.txt (line 13))
+#8 34.94   Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.4 kB)
+#8 36.61 Collecting regex (from tiktoken<1.0.0,>=0.7.0->langchain-openai->-r requirements-api.txt (line 15))
+#8 36.79   Downloading regex-2026.9.29-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+#8 37.06 Collecting requests (from tiktoken<1.0.0,>=0.7.0->langchain-openai->-r requirements-api.txt (line 15))
+#8 37.25   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+#8 37.73 Collecting cffi>=2.0.0 (from cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp->-r requirements-api.txt (line 13))
+#8 37.91   Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+#8 38.09 Collecting jsonpointer>=3.2 (from jsonpatch<2.0.0,>=1.33.0->langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 38.26   Downloading jsonpointer-3.2.1-py3-none-any.whl.metadata (2.6 kB)
+#8 38.50 Collecting distro>=1.7.0 (from langsmith<1.0.0,>=0.3.45->langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 38.68   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+#8 38.93 Collecting requests-toolbelt>=1.0.0 (from langsmith<1.0.0,>=0.3.45->langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 39.11   Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl.metadata (14 kB)
+#8 39.57 Collecting zstandard>=0.23.0 (from langsmith<1.0.0,>=0.3.45->langchain-core<2.0.0,>=1.3.3->langchain-mcp-adapters->-r requirements-api.txt (line 14))
+#8 39.74   Downloading zstandard-0.25.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.3 kB)
+#8 40.98 Collecting charset_normalizer<4,>=2 (from requests->tiktoken<1.0.0,>=0.7.0->langchain-openai->-r requirements-api.txt (line 15))
+#8 41.16   Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+#8 41.42 Collecting urllib3<3,>=1.26 (from requests->tiktoken<1.0.0,>=0.7.0->langchain-openai->-r requirements-api.txt (line 15))
+#8 41.61   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#8 41.84 Collecting pycparser (from cffi>=2.0.0->cryptography>=3.4.0->pyjwt[crypto]>=2.10.1->mcp->-r requirements-api.txt (line 13))
+#8 42.01   Downloading pycparser-3.11-py3-none-any.whl.metadata (8.2 kB)
+#8 42.30 Downloading fastapi-0.143.0-py3-none-any.whl (144 kB)
+#8 42.54 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+#8 43.01 Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+#8 43.45    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 4.7 MB/s eta 0:00:00
+#8 43.94 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+#8 44.11 Downloading pyjwt-2.15.1-py3-none-any.whl (33 kB)
+#8 44.29 Downloading bcrypt-5.0.0-cp39-abi3-manylinux_2_34_x86_64.whl (278 kB)
+#8 44.49 Downloading openai-3.29.0-py3-none-any.whl (2.2 MB)
+#8 44.71    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 9.9 MB/s eta 0:00:00
+#8 44.89 Downloading langchain_mcp_adapters-0.3.2-py3-none-any.whl (28 kB)
+#8 45.06 Downloading mcp-1.30.0-py3-none-any.whl (234 kB)
+#8 45.27 Downloading langchain_openai-1.7.0-py3-none-any.whl (145 kB)
+#8 45.48 Downloading langgraph-1.2.14-py3-none-any.whl (255 kB)
+#8 45.70 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#8 46.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 2.6 MB/s eta 0:00:00
+#8 46.24 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#8 46.41 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#8 46.59 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#8 46.78 Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#8 46.98 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#8 47.49 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#8 47.67 Downloading httptools-0.9.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (552 kB)
+#8 47.73    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 552.8/552.8 kB 9.5 MB/s eta 0:00:00
+#8 47.90 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#8 48.12 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#8 48.30 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#8 48.48 Downloading httpx2-2.13.1-py3-none-any.whl (95 kB)
+#8 48.67 Downloading httpcore2-2.13.1-py3-none-any.whl (83 kB)
+#8 48.85 Downloading jiter-0.17.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (345 kB)
+#8 49.05 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#8 49.25 Downloading langchain_core-1.6.9-py3-none-any.whl (572 kB)
+#8 49.31    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 573.0/573.0 kB 15.7 MB/s eta 0:00:00
+#8 49.48 Downloading langgraph_checkpoint-4.2.0-py3-none-any.whl (56 kB)
+#8 49.65 Downloading langgraph_prebuilt-1.1.0-py3-none-any.whl (41 kB)
+#8 49.83 Downloading langgraph_sdk-0.4.6-py3-none-any.whl (162 kB)
+#8 50.03 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+#8 50.21 Downloading pydantic_settings-2.15.0-py3-none-any.whl (69 kB)
+#8 50.38 Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+#8 50.56 Downloading sse_starlette-3.5.0-py3-none-any.whl (17 kB)
+#8 50.75 Downloading starlette-1.7.0-py3-none-any.whl (78 kB)
+#8 50.93 Downloading tiktoken-0.14.0-cp312-cp312-manylinux_2_28_x86_64.whl (1.2 MB)
+#8 51.15    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 6.6 MB/s eta 0:00:00
+#8 51.34 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#8 51.52 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#8 51.70 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#8 51.88 Downloading uvloop-0.23.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.5 MB)
+#8 52.34    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 10.1 MB/s eta 0:00:00
+#8 52.51 Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (458 kB)
+#8 52.72 Downloading websockets-16.1.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (187 kB)
+#8 52.92 Downloading xxhash-4.0.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (261 kB)
+#8 53.13 Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+#8 53.31 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#8 53.50 Downloading cryptography-50.0.2-cp311-abi3-manylinux_2_34_x86_64.whl (4.8 MB)
+#8 53.93    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.8/4.8 MB 11.1 MB/s eta 0:00:00
+#8 54.10 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#8 54.30 Downloading jsonpatch-1.35-py3-none-any.whl (17 kB)
+#8 54.47 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#8 54.65 Downloading langchain_protocol-0.0.19-py3-none-any.whl (7.3 kB)
+#8 54.82 Downloading langsmith-0.14.7-py3-none-any.whl (861 kB)
+#8 54.90    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 862.0/862.0 kB 10.7 MB/s eta 0:00:00
+#8 55.07 Downloading orjson-3.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (130 kB)
+#8 55.25 Downloading ormsgpack-1.12.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (212 kB)
+#8 55.45 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#8 55.66 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#8 55.83 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+#8 56.02 Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)
+#8 56.27 Downloading tenacity-9.2.1-py3-none-any.whl (32 kB)
+#8 56.44 Downloading truststore-0.10.4-py3-none-any.whl (18 kB)
+#8 56.65 Downloading uuid_utils-0.17.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (323 kB)
+#8 56.89 Downloading regex-2026.9.29-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#8 57.00    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.8/807.8 kB 7.9 MB/s eta 0:00:00
+#8 57.17 Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+#8 57.36 Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+#8 57.58 Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+#8 57.78 Downloading jsonpointer-3.2.1-py3-none-any.whl (8.3 kB)
+#8 57.95 Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl (54 kB)
+#8 58.13 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+#8 58.31 Downloading zstandard-0.25.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.5 MB)
+#8 59.26    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.5/5.5 MB 5.8 MB/s eta 0:00:00
+#8 59.44 Downloading pycparser-3.11-py3-none-any.whl (51 kB)
+#8 60.04 Installing collected packages: zstandard, xxhash, websockets, uvloop, uuid-utils, urllib3, typing-extensions, truststore, tenacity, sniffio, rpds-py, regex, PyYAML, python-multipart, python-dotenv, PyJWT, pycparser, packaging, ormsgpack, orjson, jsonpointer, jiter, idna, httpx-sse, httptools, h11, distro, click, charset_normalizer, certifi, bcrypt, attrs, annotated-types, annotated-doc, uvicorn, typing-inspection, requests, referencing, pydantic-core, opentelemetry-api, langchain-protocol, jsonpatch, httpcore2, httpcore, cffi, anyio, watchfiles, tiktoken, starlette, requests-toolbelt, pydantic, jsonschema-specifications, httpx2, httpx, cryptography, sse-starlette, pydantic-settings, openai, langsmith, jsonschema, fastapi, mcp, langchain-core, langgraph-sdk, langgraph-checkpoint, langchain-openai, langchain-mcp-adapters, langgraph-prebuilt, langgraph
+#8 70.41 Successfully installed PyJWT-2.15.1 PyYAML-6.0.3 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 attrs-26.1.0 bcrypt-5.0.0 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 cryptography-50.0.2 distro-1.9.0 fastapi-0.143.0 h11-0.16.0 httpcore-1.0.9 httpcore2-2.13.1 httptools-0.9.0 httpx-0.28.1 httpx-sse-0.4.3 httpx2-2.13.1 idna-3.20 jiter-0.17.0 jsonpatch-1.35 jsonpointer-3.2.1 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 langchain-core-1.6.9 langchain-mcp-adapters-0.3.2 langchain-openai-1.7.0 langchain-protocol-0.0.19 langgraph-1.2.14 langgraph-checkpoint-4.2.0 langgraph-prebuilt-1.1.0 langgraph-sdk-0.4.6 langsmith-0.14.7 mcp-1.30.0 openai-3.29.0 opentelemetry-api-1.45.1 orjson-3.13.0 ormsgpack-1.12.2 packaging-26.3 pycparser-3.11 pydantic-2.14.1 pydantic-core-2.50.1 pydantic-settings-2.15.0 python-dotenv-1.2.4 python-multipart-0.0.32 referencing-0.37.0 regex-2026.9.29 requests-2.34.2 requests-toolbelt-1.0.0 rpds-py-2026.9.1 sniffio-1.3.1 sse-starlette-3.5.0 starlette-1.7.0 tenacity-9.2.1 tiktoken-0.14.0 truststore-0.10.4 typing-extensions-4.16.0 typing-inspection-0.4.4 urllib3-2.8.0 uuid-utils-0.17.1 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-16.1.1 xxhash-4.0.1 zstandard-0.25.0
+#8 70.41 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#8 71.27 
+#8 71.27 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#8 71.27 [notice] To update, run: pip install --upgrade pip
+#8 DONE 72.3s
+
+#9 [5/9] COPY app/ ./app/
+#9 DONE 0.2s
+
+#10 [6/9] COPY prompts/ ./prompts/
+#10 DONE 0.1s
+
+#11 [7/9] COPY config/ ./config/
+#11 DONE 0.1s
+
+#12 [8/9] COPY logistics_mcp_versioned.py ab_prompt_flag.py tool_metrics.py clinics.json check_prompt_pin.py ./
+#12 DONE 0.1s
+
+#13 [9/9] RUN groupadd --gid 10001 afyaplus     && useradd --uid 10001 --gid afyaplus --no-create-home --shell /usr/sbin/nologin afyaplus     && mkdir -p /app/logs     && chown -R afyaplus:afyaplus /app
+#13 DONE 0.8s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 8.4s done
+#14 exporting manifest sha256:78ba44d3ef3afb82fb4d7b50ec1ac6c1e7606c2521f812b0224d2269b3d8a87e 0.0s done
+#14 exporting config sha256:84591015d94de9b403ce7cc9a0cd28c0276e1e471dcad5bbf4c37ef56da5f322 0.0s done
+#14 exporting attestation manifest sha256:590be3570078245e1819f68316e14c89334cf13c1cd187e22ca685630a5c6c3f
+#14 exporting attestation manifest sha256:590be3570078245e1819f68316e14c89334cf13c1cd187e22ca685630a5c6c3f 0.1s done
+#14 exporting manifest list sha256:e911f3e095d0aec842f05394ea03cd6557ceca27ac00459e007f00a96597922a 0.0s done
+#14 naming to docker.io/library/afyaplus-platform:local-dry-run done
+#14 unpacking to docker.io/library/afyaplus-platform:local-dry-run
+#14 unpacking to docker.io/library/afyaplus-platform:local-dry-run 8.3s done
+#14 DONE 17.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/cdaly3qkbicc3zfa294as5r4t
+IMAGE                             ID             DISK USAGE   CONTENT SIZE   EXTRA
+afyaplus-platform:local-dry-run   e911f3e095d0        395MB         86.5MB        
+
+=== stage: build (deploy stub) ===
+f6f8ca20db4dc84dec5b37bd4c85de97ba8b128902f31b0aa511f5a1b0b4f6db
+{"service":"afyaplus-service-platform","version":"1.0.0","status":"ok","image_tag":"local-dry-run","prompt_version":"1.2.0","prompt_sha256":"35cf5e0f268031d28c50e8e471096a5bb925eb1407482a5cc1dc464279781815","candidate_prompt_version":"1.3.0-candidate","candidate_traffic_percent":10,"model_version":"sim-2026.10.1","mcp_server_version":"1.0.0"}
+afyaplus-ci-dry-run
+
+ALL STAGES PASSED (local dry run)
